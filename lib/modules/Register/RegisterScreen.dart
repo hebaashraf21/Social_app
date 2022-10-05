@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/modules/Layout/Layout.dart';
 import 'package:social_app/modules/Login/LoginScreen.dart';
 import 'package:social_app/modules/Login/cubit/cubit.dart';
 import 'package:social_app/modules/Login/cubit/states.dart';
@@ -127,8 +128,6 @@ class RegisterScreen extends StatelessWidget
                                             email: EmailController.text,
                                             password: PasswordController.text,
                                             phone: PhoneController.text,
-
-
                                             );
                                       }
                                     },
@@ -145,8 +144,9 @@ class RegisterScreen extends StatelessWidget
     );
       }, listener: (context,state)
       {
-        if (state is SocialRegisterSuccessState) 
+        if (state is SocialCreateUserSuccessState) 
             {
+              navigateAndFinish(context, LoginScreen());
 
             } else 
             {

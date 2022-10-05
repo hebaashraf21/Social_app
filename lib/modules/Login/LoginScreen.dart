@@ -1,8 +1,10 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/modules/Layout/Layout.dart';
 import 'package:social_app/modules/Login/cubit/cubit.dart';
 import 'package:social_app/modules/Login/cubit/states.dart';
+import 'package:social_app/shared/network/local/cache_helper.dart';
 
 import '../../shared/components/components.dart';
 import '../Register/RegisterScreen.dart';
@@ -64,11 +66,11 @@ class LoginScreen extends StatelessWidget {
                                   }
                                 },
                                 onSubmit: () {
-                                  if (FormKey.currentState!.validate()) {
-                                    // SocialLoginCubit.get(context).UserLogin(
-                                    //     email: EmailController.text,
-                                    //     password: PasswordController.text);
-                                  }
+                                  // if (FormKey.currentState!.validate()) {
+                                  //   SocialLoginCubit.get(context).UserLogin(
+                                  //       email: EmailController.text,
+                                  //       password: PasswordController.text);
+                                  // }
                                 },
                                 label: "Password",
                                 prefix: Icons.lock_outline,
@@ -110,13 +112,9 @@ class LoginScreen extends StatelessWidget {
                       ))),
             )));
       }, listener: (context, state) {
-        if (state is SocialLoginSuccessState) {
-          // if (state.loginmodel.status!) {
-
-          //   showToast(
-          //       text: state.loginmodel.message.toString(), state: ToastState.SUCCESS);
-
-          //   CacheHelper.SaveData(key: 'token', value: state.loginmodel.data!.token).then((value) => navigateAndFinish(context, HomeScreen()));    
+        if (state is SocialLoginSuccessState)
+         {
+          CacheHelper.SaveData(key: 'uID', value: state.uId).then((value) {navigateAndFinish(context, Layout());});
 
           } else {
             // showToast(

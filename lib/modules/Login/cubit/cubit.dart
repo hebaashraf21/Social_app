@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/modules/Login/cubit/states.dart';
+import 'package:social_app/shared/network/local/cache_helper.dart';
 
 class SocialLoginCubit extends Cubit<SocialLoginStates>
 {
@@ -29,7 +30,14 @@ class SocialLoginCubit extends Cubit<SocialLoginStates>
   })
   {
     emit(SocialloginLoadingState());
-    FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((value) => print(value.user!.email)).catchError((onError){print(onError.toString());});
+    FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password)
+    .then((value)async {
+      
+      emit(SocialLoginSuccessState(value.user!.uid));
+      await CacheHelper.SaveData(key: 'uID',value: value.user!.uid);
+      //print(value.user!.uid);
+      //print(value.user!.email);
+      }).catchError((onError){print(onError.toString());});
   }
 
 
