@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "403371458862",
+    "project_id": "udeme-course-748a5",
+    "storage_bucket": "udeme-course-748a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403371458862:android:e088b81a5d3d15e1607abf",
+        "android_client_info": {
+          "package_name": "com.example.social_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403371458862-rc9d3d82cmh1cjsre4g41qeqcp2por2h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.social_app",
+            "certificate_hash": "605567ccf187fbaf905f558dbae80a6f2601e091"
+          }
+        },
+        {
+          "client_id": "403371458862-u0qk4s6n4c1hhf4jnt74skh7v7t4uom3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3YJ5skNOPpuqVyR_Oj1I82DBvr9a1K6g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403371458862-u0qk4s6n4c1hhf4jnt74skh7v7t4uom3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
