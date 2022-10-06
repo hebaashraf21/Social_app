@@ -10,6 +10,7 @@ import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
 import 'package:social_app/shared/network/remote/bloc_observer.dart';
 import 'package:social_app/shared/network/remote/dio_helper.dart';
+import 'package:social_app/styles/Themes.dart';
 
 import 'Cubit/states.dart';
 import 'modules/Register/RegisterScreen.dart';
@@ -26,35 +27,35 @@ Future<void> main() async {
   await DioHelper.init();
   await CacheHelper.init();
   uID=CacheHelper.GetData(key: 'uID');
+  bool? isDark=CacheHelper.GetData(key: 'isDark');
   print(uID);
 
-  runApp(MyApp(uID??null));
+  runApp(MyApp(uID,isDark));
 }
 
 class MyApp extends StatelessWidget {
   var uID;
-  MyApp(this.uID);
+  final bool? isDark;
+  MyApp(this.uID,this.isDark);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
   return MultiBlocProvider(
       providers: [
-        BlocProvider(create:(context)=> SocialCubit()..getUserData()),
+        BlocProvider(create:(context)=> SocialCubit()..getUserData()..changeMode(fromShared: isDark),),
       ],
           child: BlocConsumer<SocialCubit,SocialStates>(
           listener:(context,state){},
           builder: (context,state) {
 
             return MaterialApp(
-              theme: ThemeData(
-                appBarTheme: AppBarTheme(
-                  elevation: 0,
-                  color: Colors.white,
-                  titleTextStyle: TextStyle(color: Colors.blue,fontWeight: FontWeight.w600,fontSize: 25)
-                )
-              ),
+              // theme: SocialCubit.get(context).isDark
+              //       ? Darktheme
+              //       : LightTheme,
+              theme: LightTheme,
               debugShowCheckedModeBanner: false,
+              
               home: (uID==null)?LoginScreen():Layout()
 
               );

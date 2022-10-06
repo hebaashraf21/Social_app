@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/Cubit/cubit.dart';
 import 'package:social_app/Cubit/states.dart';
+import 'package:social_app/modules/NewPost/NewPostScreen.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/styles/icon_broken.dart';
 
 class Layout extends StatelessWidget
 {
@@ -17,48 +19,31 @@ class Layout extends StatelessWidget
         var cubit=SocialCubit.get(context);
         return Scaffold(
           appBar: AppBar(
-            title: Text("Home"),
+            title: Text(cubit.Titles[cubit.currentIndex]),
+            actions: [
+              IconButton(onPressed: (){}, icon: Icon(IconBroken.Notification)),
+              IconButton(onPressed: (){}, icon: Icon(IconBroken.Search))],
           ),
-      body: ConditionalBuilder(
-        condition: cubit.model !=null,
-        builder: (context)=>Column(
-        children: [
-          if(FirebaseAuth.instance.currentUser!.emailVerified==false)
-          Container(
-            color: Colors.amber.withOpacity(0.5),
-            child: Padding(padding: EdgeInsets.symmetric(horizontal: 10,vertical: 2),
-            child: Row(
-            children: [
-              Icon(Icons.warning),
-              SizedBox(width:15),
-              Expanded(child: Text("Please verify email"),),
-              SizedBox(width:20),
-              TextButton(
-                onPressed: ()
-                {
-                  FirebaseAuth.instance
-                  .currentUser?.sendEmailVerification()
-                  .then((value) 
-                  {
-                    showToast(text: 'Check your Email', state: ToastState.SUCCESS);
-                  })
-                  .catchError((err)
-                  {
-                    print(err.toString());
-                    //showToast(text: text, state: ToastState.ERROR);
-                  });
-
-              }, child: Text("Send"))
-              
-            ],
-          ),)
-          )
-        ],
-      ),
-        fallback: (context)=>Center(child: CircularProgressIndicator(),))
+      body: cubit.Screens[cubit.currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: cubit.currentIndex,
+        onTap: (Value){cubit.ChangeNavBar(Value);},
+        items: [
+          BottomNavigationBarItem(icon: Icon(IconBroken.Home),label:"Home"),
+          BottomNavigationBarItem(icon: Icon(IconBroken.Chat),label: "Chats"),
+          BottomNavigationBarItem(icon: Icon(IconBroken.Paper_Upload),label: "Post"),
+          BottomNavigationBarItem(icon: Icon(IconBroken.Location),label: "Users"),
+          BottomNavigationBarItem(icon: Icon(IconBroken.Setting),label: "Settings")
+        ]),
     );
       },
-       listener: (context,state){});
+       listener: (context,state)
+       {
+        if(state is SocialNewPostState)
+        {
+          navigateTo(context, NewPostScreen());
+        }
+       });
     throw UnimplementedError();
   }
   

@@ -129,7 +129,7 @@ Widget defaultButton({
         borderRadius: BorderRadius.circular(
           radius,
         ),
-        color: defaultColor,
+        color: primary,
       ),
       child: MaterialButton(
         onPressed: () {
