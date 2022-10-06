@@ -19,7 +19,7 @@ class SocialCubit extends Cubit<SocialStates>
 
   static SocialCubit get(context)=>BlocProvider.of(context);
 
-   UserModel? model;
+   UserModel? userModel;
    int currentIndex=0;
    List<Widget>Screens=[FeedsScreen(),ChatsScreen(),NewPostScreen(),UsersScreen(),SettingsScreen()];
    List<String>Titles=['Home','Chats','Add post','Users','Settings'];
@@ -61,7 +61,7 @@ class SocialCubit extends Cubit<SocialStates>
         emit(SocialGetUserSuccessState());
         //print("user data");
         //print(value.data());
-        model=UserModel.fromJson(value.data()!);
+        userModel=UserModel.fromJson(value.data()!);
       })
     .catchError(
       (err){
