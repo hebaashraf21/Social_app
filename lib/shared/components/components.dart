@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/styles/colors.dart';
+import 'package:social_app/styles/icon_broken.dart';
 
 import '../../modules/Login/LoginScreen.dart';
 import '../network/local/cache_helper.dart';
 
 
 
+
+Widget defaultAppBar(
+  {
+    required BuildContext context,
+    List<Widget>?actions,
+    String? title,
+  }
+)=>AppBar
+(
+  title: Text(title!),
+  leading: IconButton(
+    onPressed: ()
+    {
+      Navigator.pop(context);
+    }, icon: Icon(IconBroken.Arrow___Left_2)),
+    actions: actions,
+
+);
 
 
 

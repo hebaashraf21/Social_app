@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/Cubit/cubit.dart';
 import 'package:social_app/Cubit/states.dart';
+import 'package:social_app/modules/EditProfile/EditProfileScreen.dart';
 import 'package:social_app/shared/components/components.dart';
 
 import '../../styles/icon_broken.dart';
@@ -123,7 +124,7 @@ class SettingsScreen extends StatelessWidget
             children: [
               Expanded(child: OutlinedButton(onPressed: (){}, child: Text('Add photos'))),
               SizedBox(width: 8,),
-              OutlinedButton(onPressed: (){}, child: Icon(IconBroken.Edit,size: 17,))
+              OutlinedButton(onPressed: (){navigateTo(context, EditProfileScreen());}, child: Icon(IconBroken.Edit,size: 17,))
             ],
           )
       ],
