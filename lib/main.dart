@@ -16,52 +16,52 @@ import 'Cubit/states.dart';
 import 'modules/Register/RegisterScreen.dart';
 
 Future<void> main() async {
-  
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await FirebaseAppCheck.instance.activate(
-    webRecaptchaSiteKey: 'recaptcha-v3-site-key',  // If you're building a web app.
+    webRecaptchaSiteKey:
+        'recaptcha-v3-site-key', // If you're building a web app.
   );
 
   Bloc.observer = MyBlocObserver();
   await DioHelper.init();
   await CacheHelper.init();
-  uID=CacheHelper.GetData(key: 'uID');
-  bool? isDark=CacheHelper.GetData(key: 'isDark');
+  uID = CacheHelper.GetData(key: 'uID');
+  bool? isDark = CacheHelper.GetData(key: 'isDark');
   print(uID);
 
-  runApp(MyApp(uID,isDark));
+  runApp(MyApp(uID, isDark));
 }
 
 class MyApp extends StatelessWidget {
   var uID;
   final bool? isDark;
-  MyApp(this.uID,this.isDark);
+  MyApp(this.uID, this.isDark);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-  return MultiBlocProvider(
-      providers: [
-        BlocProvider(create:(context)=> SocialCubit()..getUserData()..changeMode(fromShared: isDark),),
-      ],
-          child: BlocConsumer<SocialCubit,SocialStates>(
-          listener:(context,state){},
-          builder: (context,state) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => SocialCubit()
+              ..getUserData()
+              ..changeMode(fromShared: isDark),
+          ),
+        ],
+        child: BlocConsumer<SocialCubit, SocialStates>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              return MaterialApp(
+                  // theme: SocialCubit.get(context).isDark
+                  //       ? Darktheme
+                  //       : LightTheme,
+                  theme: LightTheme,
+                  debugShowCheckedModeBanner: false,
+                  home: LoginScreen()
+                  //(uID==null)?LoginScreen():Layout()
 
-            return MaterialApp(
-              // theme: SocialCubit.get(context).isDark
-              //       ? Darktheme
-              //       : LightTheme,
-              theme: LightTheme,
-              debugShowCheckedModeBanner: false,
-              
-              home: (uID==null)?LoginScreen():Layout()
-
-              );
-  }
-  )
-    );
+                  );
+            }));
   }
 }
-

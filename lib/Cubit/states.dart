@@ -26,3 +26,9 @@ class ProfileImagePickedErrorState extends SocialStates{}
 class CoverImagePickedSuccessState extends SocialStates{}
 
 class CoverImagePickedErrorState extends SocialStates{}
+
+class UpdateUserLoadingState extends SocialStates {}
+
+class UpdateUserSuccessState extends SocialStates {}
+
+class UpdateUserErrorState extends SocialStates {}

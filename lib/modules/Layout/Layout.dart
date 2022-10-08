@@ -21,7 +21,7 @@ class Layout extends StatelessWidget
           appBar: AppBar(
             title: Text(cubit.Titles[cubit.currentIndex]),
             actions: [
-              IconButton(onPressed: (){}, icon: Icon(IconBroken.Notification)),
+              IconButton(onPressed: (){}, icon: const Icon(IconBroken.Notification)),
               IconButton(onPressed: (){}, icon: Icon(IconBroken.Search))],
           ),
       body: cubit.Screens[cubit.currentIndex],

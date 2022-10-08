@@ -72,7 +72,8 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates>
 
   })
   {
-    UserModel model=UserModel(email, name, phone, uID,false,image,cover,bio);
+    //UserModel model=UserModel(email, name, phone, uID,false,image,cover,bio);
+    UserModel model=UserModel(email: email,name: name,phone: phone,uID: uID,isEmailVerified: false,image: image,cover: cover,bio: bio);
 
     FirebaseFirestore.instance
     .collection('users')

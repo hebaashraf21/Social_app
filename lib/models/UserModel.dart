@@ -9,7 +9,7 @@ class UserModel
   String? cover;
   String? bio;
 
-  UserModel(this.email,this.name,this.phone,this.uID,this.isEmailVerified,this.image,this.cover,this.bio);
+  UserModel({this.email,this.name,this.phone,this.uID,this.isEmailVerified,this.image,this.cover,this.bio});
 
   UserModel.fromJson(Map<String,dynamic>json)
   {

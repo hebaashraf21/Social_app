@@ -92,14 +92,14 @@ class LoginScreen extends StatelessWidget {
                                       }
                                     },
                                     text: "Login"),
-                                fallback: (context) => Center(
+                                fallback: (context) => const Center(
                                       child: CircularProgressIndicator(),
                                     )),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Don/'t have an account?"),
+                                const Text("Don/'t have an account?"),
                                 TextButton(
                                     onPressed: () {
                                      navigateTo(context, RegisterScreen());
@@ -127,8 +127,7 @@ class LoginScreen extends StatelessWidget {
             //         navigateAndFinish(context, HomeScreen());}); 
           }
         
-      }),
-    );
+      }), );
     throw UnimplementedError();
   }
 
