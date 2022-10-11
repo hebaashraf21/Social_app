@@ -1,50 +1,68 @@
+import "package:conditional_builder_null_safety/conditional_builder_null_safety.dart";
 import 'package:flutter/material.dart';
+import "package:flutter_bloc/flutter_bloc.dart";
+import "package:social_app/Cubit/cubit.dart";
+import "package:social_app/Cubit/states.dart";
 import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/styles/icon_broken.dart';
+
+import "../../models/PostModel.dart";
 
 class FeedsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          Card(
-              margin: EdgeInsets.all(8),
-              elevation: 5,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Stack(
-                alignment: AlignmentDirectional.bottomEnd,
-                children: [
-                  Image(
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      height: 200,
-                      image: NetworkImage(
-                          'https://img.freepik.com/free-vector/pink-watercolor-leaves-background_23-2148907681.jpg?w=996&t=st=1665010219~exp=1665010819~hmac=235af36592ad218836f11dd61abad54e888ca499fefd6abdd8039f8f8fe38ec9')),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text(
-                      "Homies communicates with homies :)",
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                  )
-                ],
-              )),
-          ListView.separated(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) => buildPostItem(context),
-              separatorBuilder: (context, index) => SizedBox(height: 10),
-              itemCount: 10),
-          SizedBox(height: 10),
-        ],
-      ),
-    );
+    return BlocConsumer<SocialCubit, SocialStates>(
+        builder: (context, state) {
+          return ConditionalBuilder(
+              condition: SocialCubit.get(context).posts.length > 0,
+              builder: (context) {
+                return SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      Card(
+                          margin: EdgeInsets.all(8),
+                          elevation: 5,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: Stack(
+                            alignment: AlignmentDirectional.bottomEnd,
+                            children: [
+                              Image(
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                  height: 200,
+                                  image: NetworkImage(
+                                      'https://img.freepik.com/free-vector/pink-watercolor-leaves-background_23-2148907681.jpg?w=996&t=st=1665010219~exp=1665010819~hmac=235af36592ad218836f11dd61abad54e888ca499fefd6abdd8039f8f8fe38ec9')),
+                              Padding(
+                                padding: EdgeInsets.all(8),
+                                child: Text(
+                                  "Homies communicates with homies :)",
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                ),
+                              )
+                            ],
+                          )),
+                      ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) => buildPostItem(
+                              SocialCubit.get(context).posts[index], context),
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: 10),
+                          itemCount: SocialCubit.get(context).posts.length),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                );
+              },
+              fallback: (context) =>
+                  Center(child: CircularProgressIndicator()));
+        },
+        listener: (context, state) {});
     throw UnimplementedError();
   }
 
-  Widget buildPostItem(context) => Card(
+  Widget buildPostItem(PostModel model, context) => Card(
       margin: EdgeInsets.symmetric(horizontal: 8),
       elevation: 10,
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -56,8 +74,7 @@ class FeedsScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage(
-                      'https://img.freepik.com/free-vector/blurred-background-with-hello-springtime-lettering_23-2148427181.jpg?w=996&t=st=1665013218~exp=1665013818~hmac=1f135c73811dfd611200e20a5f2f9f68c9b587d6c55f09ccc526725649244d85'),
+                  backgroundImage: NetworkImage('${model.image}'),
                 ),
                 SizedBox(
                   width: 15,
@@ -69,7 +86,7 @@ class FeedsScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          "heba ashraf",
+                          "${model.name}",
                           style: TextStyle(height: 1.4),
                         ),
                         SizedBox(
@@ -83,7 +100,7 @@ class FeedsScreen extends StatelessWidget {
                       ],
                     ),
                     Text(
-                      "jan20134 6:40",
+                      "${model.datetime}",
                       style: Theme.of(context)
                           .textTheme
                           .caption!
@@ -111,7 +128,7 @@ class FeedsScreen extends StatelessWidget {
               ),
             ),
             Text(
-              "jdhyf hdbye ehdbb hfb4y3 heb2fy ehbfe heb2y b2h hdjks fhbefr jdhyf hdbye ehdbb hfb4y3 heb2fy ehbfe heb2y b2h hdjks fhbefr jdhyf hdbye ehdbb hfb4y3 heb2fy ehbfe heb2y b2h hdjks fhbefr jdhyf hdbye ehdbb hfb4y3 heb2fy ehbfe heb2y b2h hdjks fhbefr ",
+              "${model.text}",
               style: Theme.of(context).textTheme.subtitle1,
             ),
             Padding(
@@ -226,16 +243,19 @@ class FeedsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              height: 140,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          'https://img.freepik.com/free-vector/pink-watercolor-leaves-background_23-2148907681.jpg?w=996&t=st=1665010219~exp=1665010819~hmac=235af36592ad218836f11dd61abad54e888ca499fefd6abdd8039f8f8fe38ec9'))),
-            ),
+            if (model.postImage != "")
+              Padding(
+                padding: EdgeInsetsDirectional.only(top: 15),
+                child: Container(
+                  height: 140,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage('${model.postImage}'))),
+                ),
+              ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Row(
@@ -289,7 +309,8 @@ class FeedsScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 10, top: 5,left: 0,right: 0),
+              padding:
+                  const EdgeInsets.only(bottom: 10, top: 5, left: 0, right: 0),
               child: Container(
                 width: double.infinity,
                 color: Colors.grey[500],
@@ -306,7 +327,7 @@ class FeedsScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 15,
                         backgroundImage: NetworkImage(
-                            'https://img.freepik.com/free-vector/blurred-background-with-hello-springtime-lettering_23-2148427181.jpg?w=996&t=st=1665013218~exp=1665013818~hmac=1f135c73811dfd611200e20a5f2f9f68c9b587d6c55f09ccc526725649244d85'),
+                            '${SocialCubit.get(context).userModel!.image}'),
                       ),
                       SizedBox(width: 10),
                       Text(

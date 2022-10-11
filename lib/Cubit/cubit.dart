@@ -12,6 +12,7 @@ import 'package:social_app/modules/Feeds/FeedsScreen.dart';
 import 'package:social_app/modules/Settings/SettingsScreen.dart';
 import 'package:social_app/modules/Users/UsersScreen.dart';
 
+import "../models/PostModel.dart";
 import '../modules/NewPost/NewPostScreen.dart';
 import '../shared/components/constants.dart';
 import '../shared/network/local/cache_helper.dart';
@@ -75,119 +76,228 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
-  File? profileImage;
-  var picker = ImagePicker();
+  XFile? profileImage;
+  File? profileImageFile;
+  final ImagePicker picker = ImagePicker();
 
   Future<void> getProfileImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      profileImage = File(pickedFile.path);
+    profileImage = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (profileImage != null) {
+      profileImageFile = File(profileImage!.path);
       emit(ProfileImagePickedSuccessState());
     } else {
-      print('No image selected');
+      print("please selected image");
       emit(ProfileImagePickedErrorState());
     }
   }
 
-  File? coverImage;
-
+  XFile? coverImage;
+  File? coverImageFile;
   Future<void> getCoverImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      coverImage = File(pickedFile.path);
+    coverImage = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (coverImage != null) {
+      coverImageFile = File(coverImage!.path);
       emit(CoverImagePickedSuccessState());
     } else {
-      print('No image selected');
+      print("please selected image");
       emit(CoverImagePickedErrorState());
     }
   }
 
-  String profileImageUrl = '';
-
-  void uploadProfileImage() {
-    firebase_storage.FirebaseStorage.instance
+  String profileImageUrl = "";
+  void uploadProfileImage({
+    required String name,
+    required String phone,
+    required String bio,
+  }) async {
+    await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('${userModel!.uID}')
         .child('users/${Uri.file(profileImage!.path).pathSegments.last}')
-        .putFile(profileImage!)
+        .putFile(profileImageFile!) //image waslet el storage
         .then((value) {
-      value.ref.getDownloadURL().then((value) {
-        profileImageUrl = value;
-        print("value:$profileImageUrl");
-        emit(ProfileImagePickedSuccessState());
-      }).catchError((err) {
+      value.ref.getDownloadURL().then(
+        (value) {
+          profileImageUrl = value;
+          updateUser(
+            name: name,
+            phone: phone,
+            bio: bio,
+            image: value,
+          );
+        },
+      ).catchError(
+        (error) {
+          emit(ProfileImagePickedSuccessState());
+        },
+      );
+    }).catchError(
+      (error) {
+        print(error.toString());
         emit(ProfileImagePickedErrorState());
-      });
-    }).catchError(() {
-      emit(ProfileImagePickedErrorState());
-    });
+      },
+    );
   }
 
-  String coverImageUrl = '';
-
-  void uploadCoverImage() {
-    firebase_storage.FirebaseStorage.instance
+  String coverImageUrl = "";
+  void uplaodCoverImage({
+    required String name,
+    required String phone,
+    required String bio,
+  }) async {
+    await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('${userModel!.uID}')
         .child('users/${Uri.file(coverImage!.path).pathSegments.last}')
-        .putFile(coverImage!)
+        .putFile(coverImageFile!) //image waslet el storage
         .then((value) {
       value.ref.getDownloadURL().then((value) {
         coverImageUrl = value;
-        print("value:$coverImageUrl");
+        updateUser(
+          name: name,
+          phone: phone,
+          bio: bio,
+          cover: value,
+        );
+      }).catchError((error) {
+        print(error);
         emit(CoverImagePickedSuccessState());
-      }).catchError((err) {
-        emit(CoverImagePickedErrorState());
       });
-    }).catchError(() {
+    }).catchError((error) {
+      print(error);
       emit(CoverImagePickedErrorState());
     });
   }
 
-  void updateUserImages({
-    required String name,
-    required String phone,
-    required String bio,
-  }) {
+  // void updateUserImages({
+  //   required String name,
+  //   required String phone,
+  //   required String bio,
+  // }) {
+  //   emit(UpdateUserLoadingState());
+
+  //   if (coverImage != null) {
+  //     uploadCoverImage();
+  //   } else if (profileImage != null) {
+  //     uploadProfileImage();
+  //   } else if (coverImage != null && profileImage != null) {
+  //     uploadCoverImage();
+  //     uploadProfileImage();
+  //   } else {
+  //     updateUser(name: name, phone: phone, bio: bio);
+  //   }
+  // }
+
+  void updateUser(
+      {required String name,
+      required String phone,
+      required String bio,
+      String? image,
+      String? cover}) {
     emit(UpdateUserLoadingState());
-
-    if (coverImage != null) {
-      uploadCoverImage();
-    } else if (profileImage != null) {
-      uploadProfileImage();
-    } else if (coverImage != null && profileImage != null) {
-      uploadCoverImage();
-      uploadProfileImage();
-    } else {
-      updateUser(name: name, phone: phone, bio: bio);
-    }
-  }
-
-  void updateUser({
-    required String name,
-    required String phone,
-    required String bio,
-  }) {
     UserModel model = UserModel(
-        uID: userModel!.uID,
+        uID: uID,
         name: name,
         phone: phone,
         bio: bio,
         isEmailVerified: false,
-        image: userModel!.image,
-        cover: userModel!.cover,
+        image: image ?? userModel!.image,
+        cover: cover ?? userModel!.cover,
         email: userModel!.email);
     FirebaseFirestore.instance
         .collection('users')
-        .doc(userModel!.uID!)
+        .doc(uID)
         .update(model.toMap())
         .then((value) {
       getUserData();
       emit(UpdateUserSuccessState());
     }).catchError(() {
       emit(UpdateUserErrorState());
+    });
+  }
+
+  XFile? postImage;
+  File? postImageFile;
+  Future<void> getPostImage() async {
+    postImage = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (postImage != null) {
+      postImageFile = File(postImage!.path);
+      emit(PostImagePickedSuccessState());
+    } else {
+      print("please selected image");
+      emit(PostImagePickedErrorState());
+    }
+  }
+
+  void uploadPostImage({
+    required String? datetime,
+    required String? text,
+  }) {
+    emit(CreatePostLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child("posts/${Uri.file(postImage!.path).pathSegments.last}")
+        .putFile(postImageFile!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        createPost(
+          datetime: datetime,
+          text: text,
+          postImage: value,
+        );
+        //emit(SocialUploadPostImageSuccessStates());
+      }).catchError((error) {
+        emit(UploadImagePostErrorState());
+      });
+    }).catchError((error) {
+      emit(UpdateUserErrorState());
+    });
+  }
+
+  void createPost({
+    String? postImage,
+    required String? text,
+    required String? datetime,
+  }) {
+    emit(CreatePostLoadingState());
+    PostModel postModel = PostModel(
+      image: userModel!.image,
+      name: userModel!.name,
+      uID: userModel!.uID,
+      datetime: datetime,
+      text: text,
+      postImage: postImage ?? '',
+    );
+    FirebaseFirestore.instance
+        .collection("posts")
+        .add(postModel.toMap())
+        .then((value) {
+      emit(CreatePostSuccessState());
+    }).catchError((error) {
+      emit(CreatePostErrorState());
+    });
+  }
+
+  void removePostImage() {
+    postImage = null;
+    postImageFile = null;
+    emit(RemovePostImage());
+  }
+
+  List<PostModel> posts = [];
+  void getPosts() {
+    emit(SocialGetPostsLoadingState());
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      emit(SocialGetPostsSuccessState());
+      value.docs.forEach((element) {
+        posts.add(PostModel.fromJson(element.data()));
+      });
+    }).catchError((error) {
+      emit(SocialGetPostsErrorState(error));
     });
   }
 }
