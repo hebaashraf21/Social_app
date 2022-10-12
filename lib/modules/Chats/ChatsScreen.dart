@@ -1,6 +1,7 @@
 import "package:conditional_builder_null_safety/conditional_builder_null_safety.dart";
 import 'package:flutter/material.dart';
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:social_app/modules/ChatDetails/ChatDetailsScreen.dart";
 import "package:social_app/shared/components/components.dart";
 
 import "../../Cubit/cubit.dart";
@@ -17,7 +18,8 @@ class ChatsScreen extends StatelessWidget {
                   SocialCubit.get(context).userModel != null,
               builder: (context) => ListView.separated(
                   physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, index) => buildChatItem(SocialCubit.get(context).userModel!),
+                  itemBuilder: (context, index) => buildChatItem(
+                      SocialCubit.get(context).userModel!, context),
                   separatorBuilder: (context, index) => myDivider(),
                   itemCount: SocialCubit.get(context).users.length),
               fallback: (context) => Center(
@@ -28,16 +30,17 @@ class ChatsScreen extends StatelessWidget {
     throw UnimplementedError();
   }
 
-  Widget buildChatItem(UserModel model) => InkWell(
-        onTap: (() {}),
+  Widget buildChatItem(UserModel model, context) => InkWell(
+        onTap: (() {
+          navigateTo(context, ChatDetailsScreen(model));
+        }),
         child: Padding(
           padding: EdgeInsets.all(20),
           child: Row(
             children: [
               CircleAvatar(
                 radius: 25,
-                backgroundImage: NetworkImage(
-                    '${model.image}'),
+                backgroundImage: NetworkImage('${model.image}'),
               ),
               SizedBox(
                 width: 15,

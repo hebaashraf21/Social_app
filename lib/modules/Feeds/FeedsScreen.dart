@@ -37,7 +37,7 @@ class FeedsScreen extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.all(8),
                                 child: Text(
-                                  "Homies communicates with homies :)",
+                                  "Homies communicate with homies :)",
                                   style: Theme.of(context).textTheme.subtitle1,
                                 ),
                               )

@@ -15,6 +15,9 @@ import 'package:social_app/styles/Themes.dart';
 import 'Cubit/states.dart';
 import 'modules/Register/RegisterScreen.dart';
 
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,6 +25,8 @@ Future<void> main() async {
     webRecaptchaSiteKey:
         'recaptcha-v3-site-key', // If you're building a web app.
   );
+  var token = await FirebaseMessaging.instance.getToken();
+  print("************$token");
 
   Bloc.observer = MyBlocObserver();
   await DioHelper.init();
@@ -47,7 +52,6 @@ class MyApp extends StatelessWidget {
             create: (context) => SocialCubit()
               ..getUserData()
               ..getPosts()
-              ..getAllUsers()
               ..changeMode(fromShared: isDark),
           ),
         ],

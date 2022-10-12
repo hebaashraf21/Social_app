@@ -70,3 +70,13 @@ class UploadImagePostSuccessState extends SocialStates {}
 class UploadImagePostErrorState extends SocialStates {}
 
 class RemovePostImage extends SocialStates {}
+
+
+class SendMessageSuccessState extends SocialStates{}
+
+class SendMessageErrorState extends SocialStates {}
+
+class GetMessageSuccessState extends SocialStates {}
+
+class GetMessageErrorState extends SocialStates {}
+

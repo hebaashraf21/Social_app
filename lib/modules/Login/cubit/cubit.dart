@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/modules/Login/cubit/states.dart';
+import "package:social_app/shared/components/constants.dart";
 import 'package:social_app/shared/network/local/cache_helper.dart';
 
 class SocialLoginCubit extends Cubit<SocialLoginStates>
@@ -35,8 +36,9 @@ class SocialLoginCubit extends Cubit<SocialLoginStates>
       
       emit(SocialLoginSuccessState(value.user!.uid));
       await CacheHelper.SaveData(key: 'uID',value: value.user!.uid);
-      //print(value.user!.uid);
-      //print(value.user!.email);
+      uID=value.user!.uid;
+      print(value.user!.uid);
+      print(value.user!.email);
       }).catchError((onError){print(onError.toString());});
   }
 
