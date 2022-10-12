@@ -14,7 +14,8 @@ class FeedsScreen extends StatelessWidget {
     return BlocConsumer<SocialCubit, SocialStates>(
         builder: (context, state) {
           return ConditionalBuilder(
-              condition: SocialCubit.get(context).posts.length > 0,
+              condition: SocialCubit.get(context).posts.length > 0 &&
+                  SocialCubit.get(context).userModel != null,
               builder: (context) {
                 return SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
@@ -42,13 +43,21 @@ class FeedsScreen extends StatelessWidget {
                               )
                             ],
                           )),
+                      // MaterialButton(
+                      //   onPressed: () {
+                      //     SocialCubit.get(context).getPosts();
+                      //   },
+                      //   child: Text("Refresh"),
+                      // ),
                       ListView.separated(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) => buildPostItem(
-                              SocialCubit.get(context).posts[index], context),
+                              SocialCubit.get(context).posts[index],
+                              context,
+                              index),
                           separatorBuilder: (context, index) =>
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                           itemCount: SocialCubit.get(context).posts.length),
                       SizedBox(height: 10),
                     ],
@@ -56,13 +65,23 @@ class FeedsScreen extends StatelessWidget {
                 );
               },
               fallback: (context) =>
-                  Center(child: CircularProgressIndicator()));
+                  (SocialCubit.get(context).posts.length == 0)
+                      ? Center(
+                          child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.document_scanner),
+                            SizedBox(height: 20),
+                            Text("No posts")
+                          ],
+                        ))
+                      : Center(child: CircularProgressIndicator()));
         },
         listener: (context, state) {});
     throw UnimplementedError();
   }
 
-  Widget buildPostItem(PostModel model, context) => Card(
+  Widget buildPostItem(PostModel model, context, index) => Card(
       margin: EdgeInsets.symmetric(horizontal: 8),
       elevation: 10,
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -262,7 +281,10 @@ class FeedsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                       child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            SocialCubit.get(context).likePost(
+                                SocialCubit.get(context).postsID[index]);
+                          },
                           child: Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: Row(
@@ -276,7 +298,7 @@ class FeedsScreen extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  '1200',
+                                  '${SocialCubit.get(context).Likes[index]}',
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                               ],

@@ -47,6 +47,7 @@ class MyApp extends StatelessWidget {
             create: (context) => SocialCubit()
               ..getUserData()
               ..getPosts()
+              ..getAllUsers()
               ..changeMode(fromShared: isDark),
           ),
         ],

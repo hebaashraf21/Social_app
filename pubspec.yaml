@@ -51,6 +51,7 @@ dependencies:
   firebase_storage: ^10.3.11
   flutter_code_style: ^2.1.1
   dart_style: ^2.2.4
+  dartdoc: ^6.1.2
 
 dev_dependencies:
   flutter_test:
