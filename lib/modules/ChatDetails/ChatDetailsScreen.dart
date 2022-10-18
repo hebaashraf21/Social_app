@@ -78,10 +78,15 @@ class ChatDetailsScreen extends StatelessWidget {
                                     color: Colors.blue,
                                     child: MaterialButton(
                                       onPressed: () {
-                                        SocialCubit.get(context).sendMessage(
-                                            text: messageController.text,
-                                            dateTime: DateTime.now().toString(),
-                                            recieverId: model.uID!);
+                                        if (messageController.text.isNotEmpty) {
+                                          SocialCubit.get(context).sendMessage(
+                                              text: messageController.text,
+                                              dateTime:
+                                                  DateTime.now().toString(),
+                                              recieverId: model.uID!);
+
+                                          messageController.clear();
+                                        }
                                       },
                                       child: Icon(
                                         IconBroken.Send,

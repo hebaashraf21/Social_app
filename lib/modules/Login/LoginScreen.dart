@@ -34,16 +34,19 @@ class LoginScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Login",
-                              style: TextStyle(
-                                  fontFamily: 'Cairo-Black', fontSize: 40),
-                            ),
-                            Text(
-                              "ta dadaaaaaaaaaaaaa",
+                              "LOGIN",
                               style: TextStyle(
                                   fontFamily: 'Cairo-Black',
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 10),
+                            Text(
+                              "       Find your mates!",
+                              style: TextStyle(
+                                  color: Colors.blue,
                                   fontSize: 20,
-                                  color: Colors.grey),
+                                  fontFamily: 'Lobster'),
                             ),
                             SizedBox(height: 30),
                             defaultTextFormField(
@@ -84,14 +87,18 @@ class LoginScreen extends StatelessWidget {
                             ConditionalBuilder(
                                 condition: state is! SocialloginLoadingState,
                                 builder: (context) => defaultButton(
-                                    function: () {
-                                      if (FormKey.currentState!.validate()) {
-                                        SocialLoginCubit.get(context).UserLogin(
-                                            email: EmailController.text,
-                                            password: PasswordController.text);
-                                      }
-                                    },
-                                    text: "Login"),
+                                      function: () {
+                                        if (FormKey.currentState!.validate()) {
+                                          SocialLoginCubit.get(context)
+                                              .UserLogin(
+                                                  email: EmailController.text,
+                                                  password:
+                                                      PasswordController.text,
+                                                  context: context);
+                                        }
+                                      },
+                                      text: "Login",
+                                    ),
                                 fallback: (context) => const Center(
                                       child: CircularProgressIndicator(),
                                     )),
@@ -102,7 +109,7 @@ class LoginScreen extends StatelessWidget {
                                 const Text("Don/'t have an account?"),
                                 TextButton(
                                     onPressed: () {
-                                     navigateTo(context, RegisterScreen());
+                                      navigateTo(context, RegisterScreen());
                                     },
                                     child: Text("Register now!"))
                               ],
@@ -112,23 +119,22 @@ class LoginScreen extends StatelessWidget {
                       ))),
             )));
       }, listener: (context, state) {
-        if (state is SocialLoginSuccessState)
-         {
-          CacheHelper.SaveData(key: 'uID', value: state.uId).then((value) {navigateAndFinish(context, Layout());});
-
-          } else {
-            // showToast(
-            //     text: state.loginmodel.message.toString(), state: ToastState.ERROR);
-            //     CacheHelper.SaveData(
-            //       key: 'token',
-            //        value: state.loginmodel.data!.token).then((value) 
-            //        {
-            //         token=state.loginmodel.data!.token!;
-            //         navigateAndFinish(context, HomeScreen());}); 
-          }
-        
-      }), );
+        if (state is SocialLoginSuccessState) {
+          CacheHelper.SaveData(key: 'uID', value: state.uId).then((value) {
+            navigateAndFinish(context, Layout());
+          });
+        } else {
+          // showToast(
+          //     text: state.loginmodel.message.toString(), state: ToastState.ERROR);
+          //     CacheHelper.SaveData(
+          //       key: 'token',
+          //        value: state.loginmodel.data!.token).then((value)
+          //        {
+          //         token=state.loginmodel.data!.token!;
+          //         navigateAndFinish(context, HomeScreen());});
+        }
+      }),
+    );
     throw UnimplementedError();
   }
-
 }

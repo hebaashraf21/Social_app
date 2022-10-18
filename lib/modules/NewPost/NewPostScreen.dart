@@ -53,14 +53,14 @@ class NewPostScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 25,
                         backgroundImage: NetworkImage(
-                            'https://img.freepik.com/free-vector/blurred-background-with-hello-springtime-lettering_23-2148427181.jpg?w=996&t=st=1665013218~exp=1665013818~hmac=1f135c73811dfd611200e20a5f2f9f68c9b587d6c55f09ccc526725649244d85'),
+                            '${SocialCubit.get(context).userModel!.image}'),
                       ),
                       SizedBox(
                         width: 15,
                       ),
                       Expanded(
                         child: Text(
-                          "heba ashraf",
+                          "${SocialCubit.get(context).userModel!.name}",
                           style: TextStyle(height: 1.4),
                         ),
                       ),

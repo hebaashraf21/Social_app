@@ -82,10 +82,7 @@ class MyApp extends StatelessWidget {
                   //       : LightTheme,
                   theme: LightTheme,
                   debugShowCheckedModeBanner: false,
-                  home: LoginScreen()
-                  //(uID==null)?LoginScreen():Layout()
-
-                  );
+                  home: (uID == null) ? LoginScreen() : Layout());
             }));
   }
 }

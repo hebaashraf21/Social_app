@@ -13,24 +13,23 @@ import '../../shared/components/components.dart';
 import '../../shared/components/constants.dart';
 import '../../shared/network/local/cache_helper.dart';
 
-
-class RegisterScreen extends StatelessWidget
-{
+class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var FormKey = GlobalKey<FormState>();
     var EmailController = TextEditingController();
     var PasswordController = TextEditingController();
-    var NameController=TextEditingController();
-    var PhoneController=TextEditingController();
+    var NameController = TextEditingController();
+    var PhoneController = TextEditingController();
 
-    return BlocProvider(create: (context) =>SocialRegisterCubit(),
-    child: BlocConsumer<SocialRegisterCubit,SocialRegisterStates>(
-      builder: (context,state){
-        var cubit=SocialRegisterCubit.get(context);
+    return BlocProvider(
+      create: (context) => SocialRegisterCubit(),
+      child: BlocConsumer<SocialRegisterCubit, SocialRegisterStates>(
+          builder: (context, state) {
+        var cubit = SocialRegisterCubit.get(context);
         return Scaffold(
-      appBar: AppBar(),
-      body:Center(
+            appBar: AppBar(),
+            body: Center(
                 child: SingleChildScrollView(
               child: Center(
                   child: Padding(
@@ -43,14 +42,16 @@ class RegisterScreen extends StatelessWidget
                             Text(
                               "REGISTER",
                               style: TextStyle(
-                                  fontFamily: 'Cairo-Black', fontSize: 40),
+                                  fontFamily: 'Cairo-Black',
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "Register now to browse our hot offers",
+                              "   You are not alone anymore!",
                               style: TextStyle(
-                                  fontFamily: 'Cairo-Black',
+                                  fontFamily: 'Lobster',
                                   fontSize: 20,
-                                  color: Colors.grey),
+                                  color: Colors.blue),
                             ),
                             SizedBox(height: 30),
                             defaultTextFormField(
@@ -63,11 +64,7 @@ class RegisterScreen extends StatelessWidget
                                 },
                                 label: "User name",
                                 prefix: Icons.person),
-
-                                  
-                            
-      
-                                SizedBox(height: 10),
+                            SizedBox(height: 10),
                             defaultTextFormField(
                                 controller: EmailController,
                                 type: TextInputType.emailAddress,
@@ -78,8 +75,7 @@ class RegisterScreen extends StatelessWidget
                                 },
                                 label: "Email",
                                 prefix: Icons.email),
-
-                                     SizedBox(height: 10),
+                            SizedBox(height: 10),
                             defaultTextFormField(
                                 controller: PhoneController,
                                 type: TextInputType.phone,
@@ -90,7 +86,6 @@ class RegisterScreen extends StatelessWidget
                                 },
                                 label: "Phone number",
                                 prefix: Icons.phone),
-
                             SizedBox(height: 10),
                             defaultTextFormField(
                                 controller: PasswordController,
@@ -112,23 +107,23 @@ class RegisterScreen extends StatelessWidget
                                 label: "Password",
                                 prefix: Icons.lock_outline,
                                 suffix: cubit.suffix,
-                                isPassword:
-                                    cubit.isPassword,
+                                isPassword: cubit.isPassword,
                                 suffixPressed: () {
                                   cubit.changeSuffix();
                                 }),
                             SizedBox(height: 20),
                             ConditionalBuilder(
-                                condition: state is !SocialRegisterLoadingState,
+                                condition: state is! SocialRegisterLoadingState,
                                 builder: (context) => defaultButton(
                                     function: () {
                                       if (FormKey.currentState!.validate()) {
-                                        SocialRegisterCubit.get(context).UserRegister(
-                                            name:NameController.text,
-                                            email: EmailController.text,
-                                            password: PasswordController.text,
-                                            phone: PhoneController.text,
-                                            );
+                                        SocialRegisterCubit.get(context)
+                                            .UserRegister(
+                                          name: NameController.text,
+                                          email: EmailController.text,
+                                          password: PasswordController.text,
+                                          phone: PhoneController.text,
+                                        );
                                       }
                                     },
                                     text: "Register"),
@@ -136,25 +131,16 @@ class RegisterScreen extends StatelessWidget
                                       child: CircularProgressIndicator(),
                                     )),
                             SizedBox(height: 10),
-                            
                           ],
                         ),
                       ))),
-            ))
+            )));
+      }, listener: (context, state) {
+        if (state is SocialCreateUserSuccessState) {
+          navigateAndFinish(context, LoginScreen());
+        } else {}
+      }),
     );
-      }, listener: (context,state)
-      {
-        if (state is SocialCreateUserSuccessState) 
-            {
-              navigateAndFinish(context, LoginScreen());
-
-            } else 
-            {
-              
-            }
-        }
-      ), );
     throw UnimplementedError();
   }
-
 }

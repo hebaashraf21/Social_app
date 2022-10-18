@@ -150,7 +150,7 @@ class FeedsScreen extends StatelessWidget {
               "${model.text}",
               style: Theme.of(context).textTheme.subtitle1,
             ),
-            Padding(
+            /*Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Container(
                 width: double.infinity,
@@ -261,7 +261,8 @@ class FeedsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
+            ),*/
+
             if (model.postImage != "")
               Padding(
                 padding: EdgeInsetsDirectional.only(top: 15),

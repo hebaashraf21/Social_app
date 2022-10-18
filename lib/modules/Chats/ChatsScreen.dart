@@ -19,7 +19,7 @@ class ChatsScreen extends StatelessWidget {
               builder: (context) => ListView.separated(
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) => buildChatItem(
-                      SocialCubit.get(context).userModel!, context),
+                      SocialCubit.get(context).users[index], context),
                   separatorBuilder: (context, index) => myDivider(),
                   itemCount: SocialCubit.get(context).users.length),
               fallback: (context) => Center(

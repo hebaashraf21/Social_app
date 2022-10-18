@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import "package:social_app/Cubit/cubit.dart";
 import 'package:social_app/modules/Login/cubit/states.dart';
 import "package:social_app/shared/components/constants.dart";
 import 'package:social_app/shared/network/local/cache_helper.dart';
@@ -27,7 +28,8 @@ class SocialLoginCubit extends Cubit<SocialLoginStates>
 
   void UserLogin({
     required String email,
-    required String password
+    required String password,
+    required BuildContext context
   })
   {
     emit(SocialloginLoadingState());
@@ -36,6 +38,7 @@ class SocialLoginCubit extends Cubit<SocialLoginStates>
       
       emit(SocialLoginSuccessState(value.user!.uid));
       await CacheHelper.SaveData(key: 'uID',value: value.user!.uid);
+      SocialCubit.get(context).getUserData();
       uID=value.user!.uid;
       print(value.user!.uid);
       print(value.user!.email);
