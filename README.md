@@ -1,16 +1,18 @@
 ## 📝 Table of Contents
 
-- [Note](#note)
 - [About](#about)
+- [Note](#note)
 - [Packages used](#packages)
 - [ScreenShots from the app](#screen-shots)
 - [Contributors](#Contributors)
 
+## About <a name = "about"></a>
+- A social media app allowing users to register, login, post content, customize profiles, and engage in seamless chat conversations.
+-  Built in Flutter based on BLoC state management using firebase services.
+
 ## Note <a name = "note"></a>
  I have not finished this project yet (Chats & Updating profile photos are not working properly). 
  
-## About <a name = "about"></a>
-- mobile app created in Flutter based on BLoC state management using firebase services.
 
 ## Packages used: <a name="packages"></a>
 
@@ -47,16 +49,11 @@
 
 ## Contributors <a name = "Contributors"></a>
 
-<table>
+<table  >
   <tr>
-    <td align="center">
-    <a href="https://github.com/hebaashraf21.png" target="_black">
-    <img src="" width="150px;" alt="Heba Ashraf"/>
-    <br />
-    <sub><b>Heba Ashraf</b></sub></a>
-    
+     <td ><a href="https://github.com/hebaashraf21"><img src="https://github.com/hebaashraf21.png" width="150px;" alt=""/><br /><sub><b>Heba Ashraf</b></sub></a><br /></td>
   </tr>
- </table>
+</table>
 
 
 
